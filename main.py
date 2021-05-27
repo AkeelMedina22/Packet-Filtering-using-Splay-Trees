@@ -41,19 +41,15 @@ packet_128k.get_packets(
 
 # Start of Protocol Search Packet
 
-# Skip List
+print("Protocol Search: ")
+print()
 
-start = time.time()
+# Skip List
 
 skip_rules = SkipList()
 
 for i, j in rules.protocol.items():
     skip_rules.insert(i, j)
-
-end = time.time()
-
-print("Skip List creation time: ", end-start)
-print()
 
 skip_times = []
 
@@ -71,10 +67,6 @@ end = time.time()
 skip_times.append(end-start)
 
 print("Time 8k Skip List: ", end-start)
-print("Acceptance Rate 8k Skip list: ",
-      (len(output)/len(packet_8k.packets))*100)
-print()
-
 
 start = time.time()
 output = []
@@ -89,10 +81,6 @@ end = time.time()
 skip_times.append(end-start)
 
 print("Time 32k Skip List: ", end-start)
-print("Acceptance Rate 32k Skip list: ",
-      (len(output)/len(packet_32k.packets))*100)
-print()
-
 
 start = time.time()
 output = []
@@ -107,10 +95,7 @@ end = time.time()
 skip_times.append(end-start)
 
 print("Time 128k Skip List: ", end-start)
-print("Acceptance Rate 128k Skip list: ",
-      (len(output)/len(packet_128k.packets))*100)
 print()
-
 
 plt.scatter([8, 32, 128], skip_times, color='red')
 plt.plot([8, 32, 128], skip_times, color='red')
@@ -125,9 +110,7 @@ splay_rules = SplayTree()
 for i, j in rules.protocol.items():
     splay_rules.insert(i, j)
 
-
 splay_times = []
-
 
 start = time.time()
 output = []
@@ -142,10 +125,6 @@ end = time.time()
 splay_times.append(end-start)
 
 print("Time 8k Splay tree: ", end-start)
-print("Acceptance Rate 8k Splay tree: ",
-      (len(output)/len(packet_8k.packets))*100)
-print()
-
 
 start = time.time()
 output = []
@@ -160,10 +139,6 @@ end = time.time()
 splay_times.append(end-start)
 
 print("Time 32k splay tree: ", end-start)
-print("Acceptance Rate 32k Splay tree: ",
-      (len(output)/len(packet_32k.packets))*100)
-print()
-
 
 start = time.time()
 output = []
@@ -178,8 +153,6 @@ end = time.time()
 splay_times.append(end-start)
 
 print("Time 128k splay tree: ", end-start)
-print("Acceptance Rate 1288k Splay tree: ",
-      (len(output)/len(packet_128k.packets))*100)
 print()
 
 plt.scatter([8, 32, 128], splay_times, color='blue')
@@ -188,11 +161,18 @@ plt.plot([8, 32, 128], splay_times, color='blue')
 labels = ['Skip List', 'Splay Tree']
 plt.legend(labels=labels)
 
+plt.ylabel("Time")
+plt.xlabel("Number of Packets")
+plt.title("Protocol Search")
+
 plt.show()
 
 ##################################################################################
 
 # Start of IP Packet Search
+
+print("IP Packet Search: ")
+print()
 
 # Skip List
 
@@ -215,13 +195,6 @@ for i, j in rules.protocol.items():
     protocol_skip_rules.insert(int(i), j)
 
 
-source_IP_skip_times = []
-dest_IP_skip_times = []
-source_Port_skip_times = []
-dest_Port_skip_times = []
-protocol_skip_times = []
-
-
 start = time.time()
 output = []
 
@@ -239,9 +212,16 @@ end = time.time()
 skip_times.append(end-start)
 
 print("Time 8k Skip List: ", end-start)
-print("Acceptance Rate 8k Skip List: ",
-      (len(output)/len(packet_8k.packets))*100)
-print()
+
+try:
+    file = open("Data_set/acl2/acl2_8k/acl8k_header8k/SkipListFilter.txt", "x")
+except:
+    file = open("Data_set/acl2/acl2_8k/acl8k_header8k/SkipListFilter.txt", "w")
+
+for element in output:
+    packet = [str(i) for i in packet_8k.packets[element][1:]]
+    file.write(" ".join(packet) + "\n")
+file.close()
 
 
 start = time.time()
@@ -260,9 +240,17 @@ end = time.time()
 skip_times.append(end-start)
 
 print("Time 32k Skip List: ", end-start)
-print("Acceptance Rate 32k Skip List: ",
-      (len(output)/len(packet_8k.packets))*100)
-print()
+
+
+try:
+    file = open("Data_set/acl2/acl2_8k/acl8k_header32k/SkipListFilter.txt", "x")
+except:
+    file = open("Data_set/acl2/acl2_8k/acl8k_header32k/SkipListFilter.txt", "w")
+
+for element in output:
+    packet = [str(i) for i in packet_32k.packets[element][1:]]
+    file.write(" ".join(packet) + "\n")
+file.close()
 
 
 start = time.time()
@@ -281,9 +269,20 @@ end = time.time()
 skip_times.append(end-start)
 
 print("Time 128k Skip List: ", end-start)
-print("Acceptance Rate 128k Skip List: ",
-      (len(output)/len(packet_8k.packets))*100)
 print()
+
+try:
+    file = open("Data_set/acl2/acl2_8k/acl8k_header128/SkipListFilter.txt", "x")
+except:
+    file = open("Data_set/acl2/acl2_8k/acl8k_header128/SkipListFilter.txt", "w")
+
+for element in output:
+    packet = [str(i) for i in packet_128k.packets[element][1:]]
+    file.write(" ".join(packet) + "\n")
+file.close()
+
+plt.scatter([8, 32, 128], skip_times, color='red')
+plt.plot([8, 32, 128], skip_times, color='red')
 
 ##################################################################################
 
@@ -308,13 +307,6 @@ for i, j in rules.protocol.items():
     protocol_splay_rules.insert(int(i), j)
 
 
-source_IP_splay_times = []
-dest_IP_splay_times = []
-source_Port_splay_times = []
-dest_Port_splay_times = []
-protocol_splay_times = []
-
-
 start = time.time()
 output = []
 
@@ -332,10 +324,16 @@ end = time.time()
 splay_times.append(end-start)
 
 print("Time 8k Splay tree: ", end-start)
-print("Acceptance Rate 8k Splay tree: ",
-      (len(output)/len(packet_8k.packets))*100)
-print()
 
+try:
+    file = open("Data_set/acl2/acl2_8k/acl8k_header8k/SplayTreeFilter.txt", "x")
+except:
+    file = open("Data_set/acl2/acl2_8k/acl8k_header8k/SplayTreeFilter.txt", "w")
+
+for element in output:
+    packet = [str(i) for i in packet_8k.packets[element][1:]]
+    file.write(" ".join(packet) + "\n")
+file.close()
 
 start = time.time()
 output = []
@@ -353,10 +351,16 @@ end = time.time()
 splay_times.append(end-start)
 
 print("Time 32k splay tree: ", end-start)
-print("Acceptance Rate 32k Splay tree: ",
-      (len(output)/len(packet_32k.packets))*100)
-print()
 
+try:
+    file = open("Data_set/acl2/acl2_8k/acl8k_header32k/SplayTreeFilter.txt", "x")
+except:
+    file = open("Data_set/acl2/acl2_8k/acl8k_header32k/SplayTreeFilter.txt", "w")
+
+for element in output:
+    packet = [str(i) for i in packet_32k.packets[element][1:]]
+    file.write(" ".join(packet) + "\n")
+file.close()
 
 start = time.time()
 output = []
@@ -374,14 +378,27 @@ end = time.time()
 splay_times.append(end-start)
 
 print("Time 128k splay tree: ", end-start)
-print("Acceptance Rate 128k Splay tree: ",
-      (len(output)/len(packet_128k.packets))*100)
 
+try:
+    file = open(
+        "Data_set/acl2/acl2_8k/acl8k_header128/SplayTreeFilter.txt", "x")
+except:
+    file = open(
+        "Data_set/acl2/acl2_8k/acl8k_header128/SplayTreeFilter.txt", "w")
+
+for element in output:
+    packet = [str(i) for i in packet_128k.packets[element][1:]]
+    file.write(" ".join(packet) + "\n")
+file.close()
 
 plt.scatter([8, 32, 128], splay_times, color='blue')
 plt.plot([8, 32, 128], splay_times, color='blue')
 
 labels = ['Skip List', 'Splay Tree']
 plt.legend(labels=labels)
+
+plt.ylabel("Time")
+plt.xlabel("Number of Packets")
+plt.title("IP Packet Search")
 
 plt.show()

@@ -22,6 +22,6 @@ class Packet:
                 line = line.split()
 
                 self.packets.append([iteration, int(line[0]), int(line[1]), int(
-                    line[2]), int(line[3]), int(line[4]), int(line[5]), True])
+                    line[2]), int(line[3]), int(line[4]), int(line[5])])
 
                 self.count = iteration

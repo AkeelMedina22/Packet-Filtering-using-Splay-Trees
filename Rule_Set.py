@@ -11,13 +11,9 @@ class Rule_Set:
         """
 
         self.source_IP = {}
-
         self.dest_IP = {}
-
         self.source_Port = {}
-
         self.dest_Port = {}
-
         self.protocol = {}
 
         self.count = 0

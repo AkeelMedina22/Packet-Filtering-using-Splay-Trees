@@ -2,7 +2,6 @@ class Node:
     def __init__(self, rule, lower, upper):
 
         self.rulenum = rule
-        self.lst = []  # keep filling this every time something new is inserted through in order traversal
 
         self.parent = None
         self.left = None
@@ -17,7 +16,6 @@ class SplayTree(Node):
     def __init__(self):
 
         self.root = None
-        self.bound_lst = {}
 
     # rotate left at node x
     def left_rotate(self, x):
@@ -92,73 +90,54 @@ class SplayTree(Node):
     def insert(self, rule, bounds):
         lower = int(bounds[0])
         upper = int(bounds[1])
-        self.bound_lst[rule] = [int(bounds[0]), int(bounds[1])]
 
-        for _ in range(2):
+        node = Node(rule, lower, upper)
 
-            if _ == 0:
-                node = Node(rule, lower, upper)
+        y = None
+        x = self.root
+
+        while x != None:
+            y = x
+
+            if (node.lower < x.lower):
+                x = x.left
             else:
-                node = Node(rule, upper, lower)
+                x = x.right
 
-            y = None
-            x = self.root
+        node.parent = y
 
-            while x != None:
-                y = x
+        if y == None:
+            self.root = node
+        elif node.lower < y.lower:
+            y.left = node
+        else:
+            y.right = node
 
-                if (node.lower < x.lower):
-                    x = x.left
-                else:
-                    x = x.right
-
-            node.parent = y
-
-            if y == None:
-                self.root = node
-            elif node.lower < y.lower:
-                y.left = node
-            else:
-                y.right = node
-
-            self.splay(node)
+        self.splay(node)
 
     def exists(self, k):
 
         current = self.root
 
         while current != None:
-            if (current.lower < current.upper):
-                if (k > current.lower and k < current.upper):
-                    return True
 
-                if k < current.lower:
-                    current = current.left
+            if (k > current.lower and k < current.upper):
+                return True
 
-                elif k > current.lower:
-                    current = current.right
+            if k < current.lower:
+                current = current.left
 
-                elif k == current.lower:
-                    return True
-            else:
+            elif k > current.lower:
+                current = current.right
 
-                if (k < current.lower and k > current.upper):
-                    return True
-
-                if k < current.lower:
-                    current = current.left
-
-                elif k > current.lower:
-                    current = current.right
-
-                elif k == current.lower:
-                    return True
+            elif k == current.lower:
+                return True
 
     def find(self, k):
 
         accepted = self.exists(k)
 
-        if accepted == True:
+        if accepted:
             return True
 
         return None
